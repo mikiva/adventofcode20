@@ -5,8 +5,8 @@ count = 0
 with open("input.txt", "r") as inp:
     x = 0
     for line in inp:
-        row = list(line.strip("\n"))
-        if row[curr_x%len(row)] == "#":
+        row = line.strip("\n")
+        if row[x%len(row)] == "#":
             count = count +1
         x += 3
         tree_map.append(row)
@@ -23,7 +23,6 @@ for slope in slopes:
         row = tree_map[curr_y]
         if row[curr_x%len(row)] == "#":
             c += 1
-        
         curr_x += slope[0]
         curr_y += slope[1]
     slope_trees = slope_trees * c
