@@ -3,13 +3,14 @@
 fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 opt = "cid"
 pp = []
+
+
 with open("input.txt", "r") as inp:
     pp = [x.replace("\n", " ") for x in inp.read().split("\n\n")]
 
+
 def check_passport(passport):
-    valid = True
-    f = [f for f in fields if f not in [x[:3] for x in passport.split()]]
-    return len(f) == 0
+    return len([f for f in fields if f not in [x[:3] for x in passport.split()]]) == 0
 
 
 def interval(p, miny, maxy):
@@ -21,14 +22,11 @@ def hgt(p):
     elif p[-2:] == "in":
         return int(p[:2]) >= 59 and int(p[:2]) <= 76
 def hcl(p):
-    if p.startswith("#") and len(p[1:]) == 6:
-        color = int(p[1:], 16) #Throws if error
-        return True
-    return False
+    return p.startswith("#") and len(p[1:]) == 6 and int(p[1:], 16) 
 def ecl(p):
     return p in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 def pid(p):
-    return len(str(p)) == 9 and int(p) #Throws if not integer
+    return len(str(p)) == 9 and int(p)
 
 def check_passport_for_real(passport):
     valid = True
