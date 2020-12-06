@@ -1,7 +1,6 @@
 answers = []
 with open("input.txt", "r") as inp:
     answers = inp.read().split("\n\n")
-    #print(answers)
     
 def anyone():
     yes = 0
