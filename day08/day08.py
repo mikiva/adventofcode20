@@ -1,28 +1,25 @@
 from collections import namedtuple
-from time import sleep
-
 codes = list()
 Code = namedtuple('Code', ['visited', 'op', 'val'])
 
-
 with open("input.txt", "r") as inp:
     for line in [x.split() for x in inp.readlines()]:
-        codes.append(Code(False, line[0],int(line[1])))
+        codes.append(Code(False, line[0], int(line[1])))
 
 def a(instructions):
-    codes = instructions.copy()
+    data = instructions.copy()
     acc, loc = 0, 0
     exits = False
     while True:
-        if loc >= len(temp):
+        if loc >= len(data):
             exits = True
             break
-        code = codes[loc]
+        code = data[loc]
         
         if code.visited:
             break
 
-        codes[loc] = code._replace(visited = True)
+        data[loc] = code._replace(visited = True)
         op, val = code.op, code.val
         if op == "nop":
             loc += 1
@@ -49,14 +46,5 @@ def b():
             return acc
 
 
-
-
-
-
-    
-
-temp= codes
-
-
-print("a", a(temp)[1])
+print("a", a(codes)[1])
 print("b", b())
