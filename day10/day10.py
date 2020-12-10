@@ -21,7 +21,6 @@ def a():
   
 
 d = defaultdict(list)
-
 def setup_adapters():
     for i in range(len(adapters_padded)-1):
         n = i + 1
@@ -34,7 +33,6 @@ def setup_adapters():
 
 memo ={}
 def find_path(l):
-    setup_adapters()
     if l[0] == adapters_padded[-1]:
         return 1
 
@@ -50,6 +48,7 @@ def find_path(l):
 
 
 def run():
+    setup_adapters()
     th, on = a()
     print(f'A: {th*on}')
     print(f'B: {find_path(d[0])}')
