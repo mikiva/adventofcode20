@@ -1,5 +1,10 @@
 from collections import namedtuple
 from copy import deepcopy
+
+import time
+
+start = time.time()
+
 orig = [list(x.strip("\n")) for x in  open("input.txt")]
 
 
@@ -70,3 +75,9 @@ def run():
 
 
 run()
+
+
+end = time.time()
+
+total = end-start
+print(total)
