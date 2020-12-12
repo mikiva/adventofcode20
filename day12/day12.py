@@ -6,46 +6,19 @@ with open("input.txt") as inp:
 dirs = ["N", "E", "S", "W"]
 wp = [-1,10]
 pox, poy = 0,0
-direction = "E"
-def full_turn():
-    global direction
-    if direction == "E":
-        direction = "W"
-    elif direction == "W":
-        direction = "E"
-    elif direction == "S":
-        direction = "N"
-    elif direction == "N":
-        direction = "S"
+direction = dirs[1]
 
+#A
 def turn(dir, deg):
     global direction
+    turns = deg // 90 % 4
 
-
-    if deg == 180:
-        full_turn()
-    elif deg == 270:
-        full_turn()
-        turn(dir, deg-180)
-    else:
+    for t in range(turns):
         if dir == "L":
-            if direction == "N":
-                direction = "W"
-            elif direction == "W":
-                direction = "S"
-            elif direction == "S":
-                direction = "E"
-            elif direction == "E":
-                direction = "N"
-        elif dir == "R":
-            if direction == "N":
-                direction = "E"
-            elif direction == "E":
-                direction = "S"
-            elif direction == "S":
-                direction = "W"
-            elif direction == "W":
-                direction = "N"
+            direction = dirs[(dirs.index(direction)-1)%4]
+        if dir == "R":
+            direction = dirs[(dirs.index(direction)+1)%4]
+
 def move_dir(dir, dist):
     global pox, poy, direction
 
@@ -60,7 +33,6 @@ def move_dir(dir, dist):
     elif dir == "F":
         move(direction, dist)
 
-
 def move(dir, dist):
     if dir in ["L", "R"]:
         turn(dir, dist)
@@ -68,6 +40,15 @@ def move(dir, dist):
         move_dir(dir, dist)
 
 
+def a():
+    for ins in instr:
+        dir, dist = ins[0], ins[1]
+        move(dir, dist)
+
+    return abs(pox) + abs(poy)
+
+
+#B
 def move_wp(dir, dist):
     global wp
 
@@ -79,14 +60,6 @@ def move_wp(dir, dist):
         wp[1] -= dist
     elif dir == "E":
         wp[1] += dist
-
-
-def a():
-    for ins in instr:
-        dir, dist = ins[0], ins[1]
-        move(dir, dist)
-
-    return abs(pox) + abs(poy)
 
 
 def turn_wp(dir, deg):
