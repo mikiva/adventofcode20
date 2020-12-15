@@ -1,53 +1,41 @@
-start = [7,14,0,17,11,1,2]
-#start = [0,3,6]
+from collections import defaultdict
+nums = [7, 14, 0, 17, 11, 1, 2]
+#nums = [0,3,6]
 
+
+def get_next_number(spoken, nums):
+    last = nums[-1]
+    if len(spoken[last]) > 1:
+        num = len(nums) - spoken[last][-2]
+    else:
+        num = 0
+    return num
 
 
 
 def play(max_turns):
 
-    #spoken = {}
+    spoken = defaultdict(list)
 
-    turn, current, spoken = 0, 0, []
-    for s in start:
-        turn += 1
-        current = s
-        spoken.append(s)
+
+    for i, s in enumerate(nums):
+        spoken[s].append(i+1)
+
 
     while 1 == 1:
-        turn += 1
-        
-        if turn > max_turns:
-            break
-        if spoken.count(current) > 1:
-            idx1 = -1
-            idx2 = -1
-            occ = (i+1 for i,n in enumerate(spoken) if n == current)
 
-            idxs = []
-            while 1 == 1:
-                try:
-                    idxs.append(next(occ))
-                except StopIteration:
-                    break
-            current = idxs[-1] - idxs[-2]
-            
-        
-        else:
-            current = 0
-        
-        spoken.append(current)
-        if turn % 10000 == 0:
-            print(turn, current)
-    return current
-            
 
-def solve():    
+        num = get_next_number(spoken, nums)
+        nums.append(num)
+
+        spoken[num].append(len(nums))
+        if len(nums) == max_turns:
+            return num
+    return -1
+
+def solve():
     print(f'A: {play(2020)}')
-    #print(f'B: {play(30000000)}')
-
-
-
+    print(f'B: {play(30000000)}')
 
 
 if __name__ == "__main__":
