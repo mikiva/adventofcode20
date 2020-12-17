@@ -1,7 +1,6 @@
 from collections import defaultdict
 
 def read_input():
-    
     #input=".#.\n..#\n###"
     input = open("input").read()
     grid = []
@@ -12,43 +11,45 @@ def read_input():
         grid.append(r)
     return grid
 
-def parse_lines(grid):
+def get_init_active(grid):
     active = set()
 
     for i,v in enumerate(grid):
         for ii,vv in enumerate(v):
             if vv == "#":
-                active.add((i,ii, 0))
+                active.add((i,ii, 0,0))
 
     return active
 
 
-def cycle(active):
+def cycle(dims, active):
 
     new_active = defaultdict(int)
 
-    for x,y,z in active:
+    for x,y,z,w in active:
         for dx in [-1, 0, 1]:
             for dy in [-1, 0, 1]:
                 for dz in [-1, 0, 1]:
-                    if dx == 0 and dy == 0 and dz == 0:
-                        continue
-                    new_active[(x+dx, y+dy, z+dz)] += 1
-
+                    for dw in [-1, 0, 1] if dims > 3 else [0]:
+                        if dx == 0 and dy == 0 and dz == 0 and dw == 0:
+                            continue
+                        new_active[(x+dx, y+dy, z+dz, w+dw)] += 1
     current_active = {p for p, v in new_active.items() if v == 3 or (v == 2 and p in active) }
     return current_active
 
-def part_1(lines):
-    for i in range(6):
-        lines = cycle(lines)
-    return len(lines)
 
-def solve(lines):
-    print(f'A: {part_1(lines)}')
+def do_cycles(active, dims):
+    for i in range(6):
+        active = cycle(dims, active)
+
+    return len(active)
+
+
+def solve(active):
+    print(f'A: {do_cycles(active,3)}')
+    print(f'B: {do_cycles(active,4)}')
+    
 
 if __name__ == "__main__":
-    lines = parse_lines(read_input())
-
-    solve(lines)
-
-
+    active = get_init_active(read_input())
+    solve(active)
