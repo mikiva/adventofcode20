@@ -26,7 +26,6 @@ def calculate_line(line, op = "+"):
 
 
 def calc(line, part):
-    
     if part == 1:
         tot = 0
         op = "+"
@@ -37,6 +36,21 @@ def calc(line, part):
                 op = item
             else:
                 tot = calculate_items(tot, int(item), op)
+    if part == 2:
+
+        tot = 1
+        line = line.split("*")
+        for i,l in enumerate(line):
+            if "+" in l:
+                linesum = sum([int(x.strip()) for x in l.split("+") ])
+                line[i] = linesum
+            
+        for k in [int(x) for x in line]:
+            if k < 1:
+                k = 1
+            tot = tot * k
+        
+
 
     return tot
 
@@ -61,18 +75,19 @@ def get_parenthesis(line, part):
     new_line = line[:ind-1] + str(get_parenthesis(line[ind:out], part)[0]) + line[out+1:]
     return get_parenthesis(new_line, part)
             
-def part_1(lines):
+
+def start_calculation(lines, part):
     sums = 0
     for line in lines:
-        tots, l = get_parenthesis(line, 1)
+        tots, l = get_parenthesis(line, part)
         sums += tots
-
     return sums
 
 
 def solve():
     lines = read_input("input")
-    print(f'A: {part_1(lines)}')
+    print(f'A: {start_calculation(lines,1)}')
+    print(f'B: {start_calculation(lines, 2)}')
 
 if __name__ == "__main__":
 
