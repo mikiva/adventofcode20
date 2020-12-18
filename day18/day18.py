@@ -3,19 +3,15 @@ def read_input(file):
     lines = open(file).read().split("\n")
     return lines
 
-def calculate_items(a,b, op = "+"):
-
+def calculate_items(a,b, op):
     if op == "*":
-        if a == 0:
-            a = 1
         return a * b
     elif op == "+":
         return a + b
 
 
-def calculate_line(line, op = "+"):
-    current = 0    
-    current_op = op
+def calculate_line(line, op):
+    current, current_op = 0, op
     for idx, item in enumerate(line):
         if item == "+" or item == "*":
             current_op = item
@@ -27,17 +23,13 @@ def calculate_line(line, op = "+"):
 
 def calc(line, part):
     if part == 1:
-        tot = 0
-        op = "+"
-        if len(line.split()) == 1:
-            return int(line)
+        tot, op = 0, "+"
         for item in line.split():
             if item == "*" or item == "+":
                 op = item
             else:
                 tot = calculate_items(tot, int(item), op)
     if part == 2:
-
         tot = 1
         line = line.split("*")
         for i,l in enumerate(line):
@@ -54,7 +46,6 @@ def calc(line, part):
 
     return tot
 
-
 def get_parenthesis(line, part):
     openp, closep = 0, 0
     ind, out = 0,0
@@ -70,23 +61,23 @@ def get_parenthesis(line, part):
                 break
             
     if openp == 0:
-        return calc(line, part), line
+        return calc(line, part)
 
-    new_line = line[:ind-1] + str(get_parenthesis(line[ind:out], part)[0]) + line[out+1:]
+    new_line = line[:ind-1] + str(get_parenthesis(line[ind:out], part)) + line[out+1:]
     return get_parenthesis(new_line, part)
             
 
 def start_calculation(lines, part):
     sums = 0
     for line in lines:
-        tots, l = get_parenthesis(line, part)
+        tots = get_parenthesis(line, part)
         sums += tots
     return sums
 
 
 def solve():
     lines = read_input("input")
-    print(f'A: {start_calculation(lines,1)}')
+    print(f'A: {start_calculation(lines, 1)}' )
     print(f'B: {start_calculation(lines, 2)}')
 
 if __name__ == "__main__":
