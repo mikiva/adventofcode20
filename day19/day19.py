@@ -36,7 +36,7 @@ def build_regexp(number):
          if number == '8':
              return '(' + build_regexp("42") + ')+'
          elif number == '11':
-             r = '|'.join(get_regex_part('42')*n + get_regex_part('31')*n for n in range(1,20))
+             r = '|'.join(get_regex_part('42')*n + get_regex_part('31')*n for n in range(1,6))
              return r
 
     return ''.join(get_regex_part(reg) for reg in rules[number])
