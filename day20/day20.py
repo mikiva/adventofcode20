@@ -1,59 +1,48 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 
-
-def print_tiles(tiles):
-    for tile in tiles:
-        print(tile)
-        for t in tiles[tile]:
-            print("".join(t))
-        print()
-
-def print_tile(tile):
-    for t in tile:
-        print("".join(t))
-    
+def flip_edge(edge):
+    e = "".join(edge)
+    return min(e, e[::-1])
 
 def read_input(filename):
-
-    tiles = defaultdict(int)
+    tiles = defaultdict(str)
     with open(filename) as inp:
         for t in inp.read().split("\n\n"):
-            id = int(t.split("\n")[0][-5:-1])
-            tile = [list(x) for x in t.split("\n")[1:]]
+            id = t.split("\n")[0][-5:-1]
+            tile = [x for x in t.split("\n")[1:]]
             tiles[id] = tile
-
     return tiles
 
 
+#Assume all borders only appear once
+def count_edges(tt):
+    edges = Counter()
+    product = 1
+    for s in range(2):
+        for t in tt:
 
-def get_edges(tt):
+            edge = [
+                flip_edge(tt[t][0]),
+                flip_edge([x[-1] for x in tt[t]]),
+                flip_edge(tt[t][-1]),
+                flip_edge([x[0] for x in tt[t]]),
+            ]
+            if s == 0:
+                for e in edge:
+                    edges[e] += 1
+            else:
+                if sum(1 for ed in edge if edges[ed] == 1) == 2:
+                    product *= int(t)
+    return product
 
-    for t in tt:
-
-        edges = [
-            "".join(tt[t][0]),
-            "".join([x[-1] for x in tt[t]]),
-            "".join(tt[t][-1]),
-            "".join([x[0] for x in tt[t]]),
-        ]
-
-        print(edges)
-        print()
-        print(rotate(edges))
-        print()
-        print_tile(tt[t])
-        print()
-
-def rotate(edges):
-    return edges[1:] + edges[:1]
 
 
 def solve(filename):
     tiles = read_input(filename)
-    #print_tiles(tiles)
 
-    get_edges(tiles)
+    print(f'A: {count_edges(tiles)}')
+
 
 
 if __name__ == "__main__":
-    solve("ex")
+    solve("input")
